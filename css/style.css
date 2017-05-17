@@ -1,0 +1,335 @@
+body {
+	text-align: center;
+	background-color: #CCFFFF;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-top: 0px;
+	height:100%;
+	width: 100%;
+}
+
+html {
+	padding-bottom: 0px;
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-top: 0px;
+	height:100%;
+	width: 100%;
+}
+
+/* This commented out code is for a responsive 3-book display,
+However it was not done this way because eventually we will only show 1 book at a time
+.container{
+	display: flex;
+	justify-content: space-around;
+	flex-wrap: wrap;
+}*/
+
+/*.ShoppingCart{
+	width: auto;
+}*/
+
+.Result, .ShoppingCart{
+	display: none;
+	justify-content: space-around;
+	padding: 10px;
+	border: 3px solid orange;
+	background-color: #ffdb58;
+	box-shadow: 5px 5px #999;
+	border-radius: 10px;
+}
+
+.Result.active, .ShoppingCart.active{
+	display: block;
+}
+
+.book {
+	display: none;
+	justify-content: space-around;
+	/*margin: 20px;
+	width:auto;*/
+	padding: 10px;
+	border: 3px solid orange;
+	background-color: #ffdb58;
+	box-shadow: 5px 5px #999;
+	border-radius: 10px;
+}
+
+.book.active{
+	display: block;
+}
+
+.book h2 {
+	font-size: 25px;
+	font-family: times;
+	font-style: italic;
+	text-align: center;
+}
+
+.book p {
+	font-family: arial;
+	text-align: justify;
+}
+
+p.Description{
+	height:150px;
+	background-color: #ffdb58 ;
+	border: 1px solid black;
+	padding: 5px;
+	border-radius: 5px;
+	overflow: auto;
+}
+
+p.Author{
+	text-align: center;
+}
+
+.book button {
+	font-size: 20px;
+	cursor:pointer;
+	color:#FFFFFF;
+	background-color: #A8A8A8;
+	border: none;
+	border-radius: 10px;
+	box-shadow: 0 5px #999;
+}
+
+.book button:active {
+	box-shadow: 0 1px #999;
+	transform: translateY(4px);
+}
+
+.book a {
+	font-size: 15px;
+}
+
+button.Dislike {
+	background-color: red;
+}
+
+button.Like {
+	background-color: green;
+}
+
+/*.Dislike {
+	float:left;
+	width: 45%;
+}*/
+
+/*.Like {
+	float:right;
+	width: 45%;
+}*/
+
+/*.link1 {
+	float: left;
+	width: 45%;
+	margin-left: 10px;
+}
+
+.link2 {
+	float: right;
+	width: 45%;
+	text-align: right;
+	margin-right: 10px;
+}*/
+
+header{	
+	/*display:flex;
+	justify-content: space-around;
+	flex-wrap: wrap;*/
+	background-color: #082567;
+	color:white;
+	width: 100%;
+	padding:0px;
+	/*font-size: 20px;*/
+	margin-bottom: 10px;
+}
+
+footer {
+	/*display:flex;
+	justify-content: space-around;
+	flex-wrap: wrap;*/
+	background-color: #082567;
+	color:white;
+	width: 100%;
+	padding:0px;
+	margin-top: 10px;
+}
+
+footer p{
+	text-align: center;
+}
+
+.parent{
+	position: relative;
+  	top: 0;
+  	left: 0;
+}
+
+.image1, .image2{
+	text-align:left;
+	height: 500px;
+	max-width: 90%;
+	position: relative;
+  	top: 0;
+  	left: 0;
+}
+
+.parent img{
+	display: none;
+}
+
+.parent img.active{
+	display: inline-block;
+}
+
+#progressbar{
+	margin: 10px 5px 5px;
+}
+
+.ui-progressbar {
+    position: relative;
+    background: #FF9999;
+}
+
+.ui-progressbar-value {
+	background: #FF0000;
+}
+
+.progress-label {
+	position: absolute;
+	left: 50%;
+	top: 4px;
+	font-weight: bold;
+	text-shadow: 1px 1px 0 #fff;
+}
+
+#likes{
+	font-family: times;
+	font-size: 20px;	
+	font-weight: bold;
+	color: green;
+}
+
+#dislikes{
+	font-family: times;
+	font-size: 20px;	
+	font-weight: bold;
+	color:red;
+}
+
+#likesText, #dislikesText, #bookLikesText, #bookDislikesText{
+	font-family: times;
+	font-size: 20px;	
+	font-weight: bold;
+}
+
+#bookLikes, #bookDislikes{	
+	font-size: 15px;
+	text-align: justify;
+	border: 1px solid #006400;
+	background-color: #90EE90;
+	border-radius: 5px;	
+}
+
+.backToStart, #shopping, #calculateTotal{
+	font-size: 20px;
+	cursor:pointer;
+	color:#FFFFFF;
+	background-color: #D3D3D3;
+	border: none;
+	border-radius: 10px;
+	box-shadow: 0 5px #999;
+}
+
+.backToStart:active, #shopping:active, #calculateTotal:active{
+	box-shadow: 0 1px #999;
+	transform: translateY(4px);
+}
+
+table{
+	text-align: center;
+    width: 100%;
+    table-layout: fixed;
+}
+
+table, th, td{
+	border:1px solid black;
+}
+
+th{
+	text-align: center;
+	font-weight: bold;
+	font-size: 18px;
+    padding: 5px 0px;
+    background-color: #9AB4CF;
+    color: white;
+}
+
+td{
+	padding: 2px;
+	background-color: #F0F0F0;
+}
+
+td.quantity input{
+	width:40%;
+}
+
+td.amazonPrice input, td.barnesNoblePrice input{	
+	font-size: 20px;
+	cursor:pointer;
+	color:black;
+	background-color: #D3D3D3;
+	border: none;
+	border-radius: 10px;
+}
+
+td.price{	
+	font-size: 20px;
+	font-weight: bold;
+}
+
+td.amazonPrice, td.barnesNoblePrice{
+	font-size: 15px;	
+}
+
+tr{
+	display:none;
+}
+
+tr.active{
+	display:table-row;
+}
+
+input[type=radio]{
+	margin: 4px;
+}
+
+.ui-widget-header{
+	border: 0;
+}
+
+.row.buttons{
+	display:none;
+}
+
+.row.buttons.active{
+	margin-top: 10px;
+	display:block;
+}
+td.hide{
+	display:none;
+}
+
+#backButton{
+	display: none;
+	background: none;
+	border: none;
+	font-size: 40px;
+}
+
+#backButton.active{
+	display: inline-block;
+}

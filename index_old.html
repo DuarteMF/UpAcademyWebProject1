@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Book Tinder</title>
+	<!-- Bootstrap -->
+	<link href="css/bootstrap.min.css" type="text/css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="css/style_old.css">
+	<meta charset="utf-8">
+</head>
+
+<body>
+	<header>
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="#"><img src="Up Academy.png" style="max-height: 200%; margin: 0px;"></a>
+				</div>
+
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<li class="active"><a href="#">Fantasy <span class="sr-only">(current)</span></a></li>
+						<li><a href="#">Science Fiction</a></li>
+						<li><a href="#">Historical Fiction</a></li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Other Categories <span class="caret"></span></a>
+							<ul class="dropdown-menu">
+								<li><a href="#">Action</a></li>
+								<li><a href="#">Another action</a></li>
+								<li><a href="#">Something else here</a></li>
+								<li role="separator" class="divider"></li>
+								<li><a href="#">Separated link</a></li>
+								<li role="separator" class="divider"></li>
+								<li><a href="#">One more separated link</a></li>
+							</ul>
+						</li>
+					</ul>
+					<form class="navbar-form navbar-left">
+						<div class="form-group">
+							<input type="text" class="form-control" placeholder="Search">
+						</div>
+						<button type="submit" class="btn btn-default">Go</button>
+					</form>
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="#">Contact</a></li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Options <span class="caret"></span></a>
+							<ul class="dropdown-menu">
+								<li><a href="#">Action</a></li>
+								<li><a href="#">Another action</a></li>
+								<li><a href="#">Something else here</a></li>
+								<li role="separator" class="divider"></li>
+								<li><a href="#">Separated link</a></li>
+							</ul>
+						</li>
+					</ul>
+				</div><!-- /.navbar-collapse -->
+			</div><!-- /.container-fluid -->
+		</nav>
+	</header>
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="book col-xs-10 col-xs-offset-1 col-md-4 col-md-offset-4">
+			<div class="row">
+				<img src="https://images-na.ssl-images-amazon.com/images/I/51wIJN44zhL._SX303_BO1,204,203,200_.jpg" class="image1 img-responsive center-block">
+				<img src="https://wtfbabe.files.wordpress.com/2012/09/the-lord-of-the-rings-fellowship-of-the-rings.jpg" class="image2 img-responsive center-block profile-wrap">
+			</div>
+				<h2>The Lord of the Rings: The Fellowship of the Ring</h2>
+				<p class="Author">By: <a href="https://en.wikipedia.org/wiki/J._R._R._Tolkien" id="Tolkien">J.R.R. Tolkien</a></p>
+				<p class="Description">The dark, fearsome Ringwraiths are searching for a Hobbit. Frodo Baggins knows that they are seeking him and the Ring he bears&#45the Ring of Power that will enable evil Sauron to destroy all that is good in Middle-earth. Now it is up to Frodo and his faithful servant, Sam, with a small band of companions, to carry the Ring to the one place it can be destroyed: Mount Doom, in the very center of Sauron&#39s realm.</p>
+				<div class="row">
+					<button class="Dislike col-xs-4 col-xs-offset-1 btn btn-danger" onclick="Dislike(this);"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span></button>
+					<button class="Like col-xs-4 col-xs-offset-2 btn btn-success" onclick="Like(this);"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span></button>
+				</div>
+				<!-- <div style="clear:both;"></div> -->
+				<p>
+				<div class="row">
+					<a href="https://www.amazon.com/Fellowship-Ring-Lord-Rings-Part/dp/0345339703/ref=pd_bxgy_14_img_3?_encoding=UTF8&pd_rd_i=0345339703&pd_rd_r=YFEWM654HH240ZZRZT0P&pd_rd_w=gZd10&pd_rd_wg=gOWq0&psc=1&refRID=YFEWM654HH240ZZRZT0P" class="link1 col-xs-6"><img src="amazon-logo_grey.png" width=75px height=32px></a>
+					<a href="https://en.wikipedia.org/wiki/The_Fellowship_of_the_Ring" class="link2 col-xs-6"><img src="220px-Wikipedia-logo-v2.png" width=32px height=32px></a>
+				</div>
+				</p>
+				<p>
+				<div class="row">
+					<a href="http://www.goodreads.com/book/show/34.The_Fellowship_of_the_Ring" class="link1 col-xs-6"><img src="goodreads_logo.png" width=150px height=32px></a>
+					<a href="http://www.barnesandnoble.com/w/fellowship-of-the-ring-j-r-r-tolkien/1100013647?ean=9780547928210" class="link2 col-xs-6"><img src="barnes-and-noble-logo.png" width=70px height=32px></a>
+				</div>
+				</p>
+				<!-- <div style="clear:both;"></div> -->
+			</div>
+
+			<div class="book col-xs-10 col-xs-offset-1 col-md-4 col-md-offset-4">
+				<img src="https://images-na.ssl-images-amazon.com/images/I/51HUqZm3JTL._SX302_BO1,204,203,200_.jpg" class="image1">
+				<h2>The Lord of the Rings: The Two Towers</h2>
+				<p class="Author">By: <a href="https://en.wikipedia.org/wiki/J._R._R._Tolkien">J.R.R. Tolkien</a></p>
+				<p class="Description">The Fellowship is scattered. Some are bracing hopelessly for war against the ancient evil of Sauron. Some are contending with the treachery of the wizard Saruman. Only Frodo and Sam are left to take the accursed One Ring, ruler of all the Rings of Power, to be destroyed in Mordor, the dark realm where Sauron is supreme. Their guide is Gollum, deceitful and lust&#45filled, slave to the corruption of the Ring.</p>
+				<div class="row">
+					<button class="Dislike col-xs-4 col-xs-offset-1 btn btn-danger" onclick="Dislike(this);"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span></button>
+					<button class="Like col-xs-4 col-xs-offset-2 btn btn-success" onclick="Like(this);"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span></button>
+				</div>
+				<!-- <div style="clear:both;"></div> -->
+				<p>
+				<div class="row">
+					<a href="https://www.amazon.com/Two-Towers-Lord-Rings-Part/dp/0345339711/ref=pd_bxgy_14_img_2?_encoding=UTF8&pd_rd_i=0345339711&pd_rd_r=0503EDA6H0FA3JHG72S8&pd_rd_w=mjPoU&pd_rd_wg=eUB5X&psc=1&refRID=0503EDA6H0FA3JHG72S8" class="link1 col-xs-6"><img src="amazon-logo_grey.png" width=75px height=32px></a>
+					<a href="https://en.wikipedia.org/wiki/The_Two_Towers" class="link2"><img src="220px-Wikipedia-logo-v2.png" width=32px height=32px></a>
+				</div>
+				</p>
+				<p>
+				<div class="row">
+					<a href="http://www.goodreads.com/book/show/15241.The_Two_Towers" class="link1 col-xs-6"><img src="goodreads_logo.png" width=150px height=32px></a>
+					<a href="http://www.barnesandnoble.com/w/two-towers-j-r-r-tolkien/1100014685?ean=9780547928203" class="link2"><img src="barnes-and-noble-logo.png" width=70px height=32px></a>
+				</div>
+				</p>
+				<!-- <div style="clear:both;"></div> -->
+			</div>
+
+			<div class="book col-xs-10 col-xs-offset-1 col-md-4 col-md-offset-4">
+				<img src="https://images-na.ssl-images-amazon.com/images/I/41zhw%2B019WL._SX303_BO1,204,203,200_.jpg" class="image1">
+				<h2>The Lord of the Rings: The Return of the King</h2>
+				<p class="Author">By: <a href="https://en.wikipedia.org/wiki/J._R._R._Tolkien">J.R.R. Tolkien</a></p>
+				<p class="Description">While the evil might of the Dark Lord Sauron swarms out to conquer all Middle&#45earth, Frodo and Sam struggle deep into Mordor, seat of Sauron&#39s power. To defeat the Dark Lord, the One Ring, ruler of all the accursed Rings of Power, must be destroyed in the fires of Mount Doom. But the way is impossibly hard, and Frodo is weakening. Weighed down by the compulsion of the Ring, he begins finally to despair.</p>
+				<div class="row">
+					<button class="Dislike col-xs-4 col-xs-offset-1 btn btn-danger" onclick="Dislike(this);"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span></button>
+					<button class="Like col-xs-4 col-xs-offset-2 btn btn-success" onclick="Like(this);"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span></button>
+				</div>
+				<!-- <div style="clear:both;"></div> -->
+				<p>
+				<div class="row">
+					<a href="https://www.amazon.com/Return-King-Lord-Rings-Part/dp/0345339738/ref=pd_sim_14_1?_encoding=UTF8&pd_rd_i=0345339738&pd_rd_r=66JS824HX5526R32W69C&pd_rd_w=mPZpw&pd_rd_wg=Z4QP6&psc=1&refRID=66JS824HX5526R32W69C" class="link1 col-xs-6"><img src="amazon-logo_grey.png" width=75px height=32px></a>
+					<a href="https://en.wikipedia.org/wiki/The_Return_of_the_King" class="link2 col-xs-6"><img src="220px-Wikipedia-logo-v2.png" width=32px height=32px></a>
+				</div>
+				</p>
+				<p>
+				<div class="row">
+					<a href="http://www.goodreads.com/book/show/18512.The_Return_of_the_King" class="link1 col-xs-6"><img src="goodreads_logo.png" width=150px height=32px></a>
+					<a href="http://www.barnesandnoble.com/w/return-of-the-king-j-r-r-tolkien/1100178475?ean=9780547928197" class="link2 col-xs-6"><img src="barnes-and-noble-logo.png" width=70px height=32px></a>
+				</div>
+				</p>						
+				<!-- <div style="clear:both;"></div> -->
+			</div>
+		</div>
+	</div>
+<footer class="container-fluid">
+	<p class="col-xs-4">Created by: Duarte Ferreira</p>
+	<p class="col-xs-4">Date: 5<sup>th</sup> of May, 2017</p>
+	<p class="col-xs-4">Contact information: duartepferreira@hotmail.com</p>
+</footer>
+<script type="text/javascript" src="js/main.js"></script>
+</body>
+</html>

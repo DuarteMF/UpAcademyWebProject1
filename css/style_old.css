@@ -1,0 +1,163 @@
+body {
+	text-align: center;
+	background-color: #CCFFFF;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-top: 0px;
+	height:100%;
+	width: 100%;
+}
+
+html {
+	padding-bottom: 0px;
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-top: 0px;
+	height:100%;
+	width: 100%;
+}
+
+/* This commented out code is for a responsive 3-book display,
+However it was not done this way because eventually we will only show 1 book at a time
+.container{
+	display: flex;
+	justify-content: space-around;
+	flex-wrap: wrap;
+}*/
+
+.book {
+	display: inline-block;
+	justify-content: space-around;
+	/*margin: 20px;
+	width:auto;*/
+	padding: 10px;
+	border: 3px solid orange;
+	background-color: #ffdb58;
+	box-shadow: 5px 5px #999;
+	border-radius: 10px;
+}
+
+.book h2 {
+	font-family: times;
+	font-style: italic;
+	text-align: justify;
+}
+
+.book p {
+	font-family: arial;
+	text-align: justify;
+}
+
+p.Description{
+	height:180px;
+}
+
+p.Author{
+	text-align: center;
+}
+
+.book button {
+	font-size: 20px;
+	cursor:pointer;
+	color:#FFFFFF;
+	/*background-color: green;*/
+	border: none;
+	border-radius: 10px;
+	box-shadow: 0 5px #999;
+}
+
+/*.book button:hover {background-color: #006400;}*/
+
+.book button:active {
+	/*background-color: #006400;*/
+	box-shadow: 0 1px #999;
+	transform: translateY(4px);
+}
+
+.book a {
+	font-size: 15px;
+}
+
+button.Dislike {
+	background-color: red;
+}
+
+/*.Dislike {
+	float:left;
+	width: 45%;
+}*/
+
+/*.Like {
+	float:right;
+	width: 45%;
+}*/
+
+/*.link1 {
+	float: left;
+	width: 45%;
+	margin-left: 10px;
+}
+
+.link2 {
+	float: right;
+	width: 45%;
+	text-align: right;
+	margin-right: 10px;
+}*/
+
+header{	
+	/*display:flex;
+	justify-content: space-around;
+	flex-wrap: wrap;*/
+	background-color: #082567;
+	color:white;
+	width: 100%;
+	padding:0px;
+	/*font-size: 20px;*/
+	margin-bottom: 10px;
+}
+
+footer {
+	/*display:flex;
+	justify-content: space-around;
+	flex-wrap: wrap;*/
+	background-color: #082567;
+	color:white;
+	width: 100%;
+	padding:0px;
+	margin-top: 10px;
+}
+
+footer p{
+	text-align: center;
+}
+
+div.book:not(:first-of-type){
+	display: none;
+	/*visibility: hidden;*/
+}
+
+.image1{
+	text-align:left;
+	max-width: 45%;
+}
+
+.image2{
+	text-align:right;
+	max-width: 45%;
+}
+
+.img-responsive{
+	display: inline-block;
+}
+
+@media(max-width: 1200px){
+	.image1{
+	text-align:center;
+	max-width: 90%;
+}
+	.image2{
+		display: none;
+	}
+
