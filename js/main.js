@@ -197,7 +197,7 @@ $("#calculateTotal").click(function(){
 		total = total + parseFloat(value.textContent);
 				
 	});
-	$("#TotalPrice").text((Math.round(total*100)/100) + $(".currency")[0].textContent);
+	$("#TotalPrice").text((Math.round(total*100)/100) + $(".currency:not(:empty)").first()[0].textContent);
 });
 
 $(function() {
