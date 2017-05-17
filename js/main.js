@@ -276,12 +276,12 @@ $(function() {
 				$parent.removeClass("active");
 				$next.fadeIn(500, function(){
 					$next.addClass("active");
-					progress();
 					if($allBooks.index($parent)==0){
 						$("#backButton").addClass("active");
 					}else if($allBooks.index($parent)==$allBooks.length-1){
 						$("#backButton").removeClass("active");
 					}
+					progress();
 					inAnimation = false;
 				})	
 			})
@@ -310,6 +310,10 @@ $(function() {
 				$parent.removeClass("active");
 				$previous.fadeIn(500, function(){
 					$previous.addClass("active");
+					if($allBooks.index($previous)==0){
+						$("#backButton").removeClass("active");
+					}					
+					progress();
 					inAnimation = false;
 				})
 			})
