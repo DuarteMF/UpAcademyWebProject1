@@ -279,6 +279,8 @@ $(function() {
 					progress();
 					if($allBooks.index($parent)==0){
 						$("#backButton").addClass("active");
+					}else if($allBooks.index($parent)==$allBooks.length-1){
+						$("#backButton").removeClass("active");
 					}
 					inAnimation = false;
 				})	
@@ -340,3 +342,4 @@ $(function() {
 	}
 	});
 });
+
