@@ -1,9 +1,6 @@
 var likeN = 0;
 var dislikeN = 0;
 
-// var likeBooks = [];
-// var dislikeBooks = [];
-
 var LikeDislikeList = [];
 
 var d = new Date();
@@ -135,9 +132,6 @@ $("#shopping").click(function(){
 
 		$titleList = $(".ShoppingCart table tbody").children("tr").children("td.itemName");
 		$.each($titleList,function(index,value){
-			// if(likeBooks.indexOf($(value).text())>-1){
-			// 	$(value).parents("tr").addClass("active");
-			// }
 			if(LikeDislikeList[index]=="like"){
 				$(value).parents("tr").addClass("active");
 			}
@@ -154,7 +148,6 @@ $("#shopping").click(function(){
 });
 
 $(".ShoppingCart").on("click",".minus-btn", function(){
-// $(".minus-btn").click(function(e){
 	$button = $(this);
 	$input = $button.parents(".quantity").children("input");
 	var value = parseInt($input.val());
@@ -169,7 +162,6 @@ $(".ShoppingCart").on("click",".minus-btn", function(){
 });
 
 $(".ShoppingCart").on("click",".plus-btn", function(){
-// $(".plus-btn").click(function(){
 	$button = $(this);
 	$input = $button.parents(".quantity").children("input");
 	var value = parseInt($input.val());
@@ -178,7 +170,6 @@ $(".ShoppingCart").on("click",".plus-btn", function(){
 });
 
 $(".ShoppingCart").on("click",".minus-btn,.plus-btn", function(){
-// $(".plus-btn, .minus-btn").click(function(){
 	$button = $(this);
 	$input = $button.parents(".quantity").children("input");
 	var value = parseInt($input.val());
@@ -239,10 +230,8 @@ $(function() {
 			$parent = $(".book.active");
 			likeN++;
 			LikeDislikeList.push("like");
-			// likeBooks.push($parent.find('h2').text());
 
 			$("#likes").text(likeN);
-			// $("#bookLikes").html(likeBooks.join("<br><br>"));
 			$("#bookLikes").html($("#bookLikes").html() + "<label>" + $parent.children("h2").text() + "</label><br>");
 		}  	
 	});
@@ -252,10 +241,8 @@ $(function() {
 			$parent = $(".book.active");
 			dislikeN++;
 			LikeDislikeList.push("dislike");
-			// dislikeBooks.push($parent.find('h2').text());
 
 			$("#dislikes").text(dislikeN);
-			// $("#bookDislikes").html(dislikeBooks.join("<br><br>"));
 			$("#bookDislikes").html($("#bookDislikes").html() + "<label>" + $parent.children("h2").text() + "</label><br>");
 		}
 	});
