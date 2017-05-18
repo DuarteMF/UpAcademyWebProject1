@@ -116,7 +116,7 @@ $.ajax({
 	url:"https://www.googleapis.com/books/v1/users/" + UserID + "/bookshelves/" + ShelfID + "/volumes?key=" + APIkey,
 }).done(function(data){
 	$.each(data.items,function(index,item){	
-		console.log(item)
+		// console.log(item)
 		loadData(index,item);
 		loadShoppingData(index,item);
 	})
