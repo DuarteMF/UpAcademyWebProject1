@@ -21,7 +21,7 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="https://upacademy.pt/" target="_blank"><img src="Up Academy.png" style="max-height: 100%; max-width: 100%;"></a>
+					<a class="navbar-brand" href="https://upacademy.pt/" target="_blank"><img src="images/Up Academy.png" style="max-height: 100%; max-width: 100%;"></a>
 				</div>
 
 				<!-- Collect the nav links, forms, and other content for toggling -->
@@ -117,7 +117,7 @@
 					<th class="itemImage">Cover</th>
 					<th class="author">Author</th>
 					<th class="googlePreview">Preview</th>
-					<th class="googlePrice"><img src="Google_Play_logo.png" width=75px height=32px></th>
+					<th class="googlePrice"><img src="images/Google_Play_logo.png" width=75px height=32px></th>
 					<th class="quantity">Quantity</th>
 			        <th class="price">Price</th>
 				</tr>
