@@ -324,8 +324,7 @@ $(function() {
 				inAnimation = true;
 		likeN = 0;
 		dislikeN = 0;
-		likeBooks = [];
-		dislikeBooks = [];
+		LikeDislikeList = [];
 
 		$start = $(".book:first-of-type");
 		$parent = $(this).parents(".AfterBooks");
@@ -338,6 +337,14 @@ $(function() {
 				inAnimation = false;
 			})	
 		})
+		$activetitleList = $(".ShoppingCart table tbody").children("tr.active");
+		$.each($activetitleList, function(index,item){
+			if(index!=0){
+				$(item).removeClass("active");
+			}
+		})
+  		$("#bookLikes").empty();
+  		$("#bookDislikes").empty();
 	}
 	});
 });
