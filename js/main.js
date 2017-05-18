@@ -37,7 +37,11 @@ function loadData(index, bookDict){
 	</div>
 	<h2></h2>
 	<p class="Author"></p>
+	<p class="Categories"></p>
 	<p class="Description ui-widget-content"></p>
+	<p class="PageNumber"></p>
+	<p class="Publisher"></p>
+	<p class="Rating"></p>
 	<p>
 	<div class="row">
 	<a class="googleBooksLink link1 col-xs-6" target="_blank"><img src="Google_Books_logo.png" width=130px height=50px></a>
@@ -57,8 +61,12 @@ function loadData(index, bookDict){
 	$("h2",$bookID).text(bookDict.volumeInfo.title);
 	$(".Author",$bookID).text("By: " + bookDict.volumeInfo.authors[0]);
 	$(".Description",$bookID).html(bookDict.volumeInfo.description);
+	$(".Categories",$bookID).text("Category: " + bookDict.volumeInfo.categories);
 	$(".googleBooksLink",$bookID).attr("href", bookDict.volumeInfo.previewLink);
 	$(".googlePlayLink",$bookID).attr("href", bookDict.volumeInfo.canonicalVolumeLink);
+	$(".PageNumber",$bookID).text(bookDict.volumeInfo.pageCount + " pages");
+	$(".Publisher",$bookID).text("Published by: " + bookDict.volumeInfo.publisher);
+	$(".Rating",$bookID).text("Average Rating: " + bookDict.volumeInfo.averageRating + "/5")
 }
 
 function loadShoppingData(index, bookDict){
@@ -108,7 +116,7 @@ $.ajax({
 	url:"https://www.googleapis.com/books/v1/users/" + UserID + "/bookshelves/" + ShelfID + "/volumes?key=" + APIkey,
 }).done(function(data){
 	$.each(data.items,function(index,item){	
-		// console.log(item)
+		console.log(item)
 		loadData(index,item);
 		loadShoppingData(index,item);
 	})

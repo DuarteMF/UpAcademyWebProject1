@@ -81,7 +81,7 @@ p.Description{
 	overflow: auto;
 }
 
-p.Author{
+p.Author, p.Categories, p.PageNumber, p.Publisher, p.Rating{
 	text-align: center;
 }
 
