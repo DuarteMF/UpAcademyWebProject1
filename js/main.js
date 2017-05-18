@@ -44,8 +44,8 @@ function loadData(index, bookDict){
 	<p class="Rating"></p>
 	<p>
 	<div class="row">
-	<a class="googleBooksLink link1 col-xs-6" target="_blank"><img src="Google_Books_logo.png" width=130px height=50px></a>
-	<a class="googlePlayLink link2 col-xs-6" target="_blank"><img src="Google_Play_logo.png" width=130px height=50px></a>
+	<a class="googleBooksLink link1 col-xs-6" target="_blank"><img src="images/Google_Books_logo.png" width=130px height=50px></a>
+	<a class="googlePlayLink link2 col-xs-6" target="_blank"><img src="images/Google_Play_logo.png" width=130px height=50px></a>
 	</div>
 	</p>
 	</div>`
