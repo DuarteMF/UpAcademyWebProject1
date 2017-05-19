@@ -76,7 +76,7 @@ function loadShoppingData(index, bookDict){
 	<td class="itemName"></td>
 	<td class="itemImage"><img style="max-height:100px;"></td>
 	<td class="author"></td>
-	<td class="googlePreview"><a target="_blank"><img src="Google_Books_logo.png" width=65px height=25px></a></td>
+	<td class="googlePreview"><a target="_blank"><img src="images/Google_Books_logo.png" width=65px height=25px></a></td>
 	<td class="googlePrice"><label class="unitaryPrice"></label><label class="currency"></label></td>
 	<td class="quantity">
 	<button class="plus-btn" type="button" name="button">
