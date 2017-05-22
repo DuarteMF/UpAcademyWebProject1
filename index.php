@@ -8,8 +8,8 @@
 			</div>
 			
 			<div class="row buttons active col-xs-10 col-xs-offset-1 col-md-6 col-md-offset-3">
-				<button id="buttonDislike" class="Dislike col-xs-4 col-xs-offset-1 btn btn-danger"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span></button>
-				<button id="buttonLike" class="col-xs-4 col-xs-offset-2 btn btn-success"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span></button>
+				<button id="buttonDislike" class="Dislike col-xs-4 col-xs-offset-1 btn btn-danger" data-opinion="dislike"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span></button>
+				<button id="buttonLike" class="col-xs-4 col-xs-offset-2 btn btn-success" data-opinion="like"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span></button>
 			</div>
 			<div class="row backButton col-xs-10 col-xs-offset-1 col-md-6 col-md-offset-3">
 				<button id="backButton" ><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></button>
