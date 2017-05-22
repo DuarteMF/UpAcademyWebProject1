@@ -3,6 +3,12 @@ var dislikeN = 0;
 
 var LikeDislikeList = [];
 
+var dataBase = openDatabase("myDatabase", "1.0", "testDB", 2 * 1024 * 1024);		
+dataBase.transaction(function(tx){		
+	//tx.executeSql('DROP TABLE Books');		
+	tx.executeSql('CREATE TABLE IF NOT EXISTS Books (id unique, title, author, opinion, price)');		
+});
+
 var d = new Date();
 document.getElementById("Date").innerHTML = d.toDateString();
 
@@ -36,6 +42,8 @@ function loadData(index, bookDict){
 	<button class="switchImage"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
 	</div>
 	<h2></h2>
+	<input type="hidden" class="hiddenFieldId"></input>		
+	<input type="hidden" class="hiddenFieldPrice"></input>
 	<p class="Author"></p>
 	<p class="Categories"></p>
 	<p class="Description ui-widget-content"></p>
@@ -66,7 +74,13 @@ function loadData(index, bookDict){
 	$(".googlePlayLink",$bookID).attr("href", bookDict.volumeInfo.canonicalVolumeLink);
 	$(".PageNumber",$bookID).text(bookDict.volumeInfo.pageCount + " pages");
 	$(".Publisher",$bookID).text("Published by: " + bookDict.volumeInfo.publisher);
-	$(".Rating",$bookID).text("Average Rating: " + bookDict.volumeInfo.averageRating + "/5")
+	$(".Rating",$bookID).text("Average Rating: " + bookDict.volumeInfo.averageRating + "/5");
+	$('.hiddenFieldId',$bookID).text(bookDict.id);		
+	if(bookDict.saleInfo.saleability == "FOR_SALE"){		
+		$('.hiddenFieldPrice',$bookID).text(bookDict.saleInfo.retailPrice.amount + currency_symbols[bookDict.saleInfo.retailPrice.currencyCode]);		
+	}else{		
+		$('.hiddenFieldPrice',$bookID).text("Unavailable!");		
+	}
 }
 
 function loadShoppingData(index, bookDict){
@@ -267,6 +281,24 @@ $(function() {
 				$next = $(".Result");
 				$(".row.buttons.active").removeClass("active");
 			}
+
+			// id unique, title, author, opinion, price		
+			// filling out the database with like/dislike info on the books		
+			$id = $('.hiddenFieldId',$parent).text();		
+			$title = $('h2',$parent).text();		
+			$author = $('.Author',$parent).text();				
+			$price = $('.hiddenFieldPrice',$parent).text();		
+			$opinion = $(this).attr('data-opinion');		
+			dataBase.transaction(function(tx){		
+				tx.executeSql('SELECT COUNT(*) as count FROM Books WHERE id = (?)', [$id], function(tx, count){		
+					if (count.rows[0].count==0){		
+						tx.executeSql('INSERT INTO Books(id, title, author, opinion, price) VALUES(?,?,?,?,?)',[$id, $title, $author, $opinion, $price]);		
+					}else{		
+						tx.executeSql('UPDATE Books SET opinion = "' + $opinion + '" WHERE id = "' + $id + '"');		
+					}		
+				});						
+			});
+
 			$parent.fadeOut(500, function(){
 				$parent.removeClass("active");
 				$next.fadeIn(500, function(){
@@ -300,6 +332,11 @@ $(function() {
 				$("br:last-of-type","#bookDislikes").remove();
 			}
 			LikeDislikeList.pop();
+
+			$id = $('.hiddenFieldId',$previous).text();		
+			dataBase.transaction(function(tx){		
+				tx.executeSql('DELETE FROM Books WHERE id = (?)', [$id]);					
+			});
 
   			$parent.fadeOut(500, function(){
 				$parent.removeClass("active");
@@ -345,6 +382,16 @@ $(function() {
 		})
   		$("#bookLikes").empty();
   		$("#bookDislikes").empty();
+  		$("#TotalPrice").text("");
 	}
 	});
 });
+
+// run th following code either in the browser console, or create a new button to run it		
+/*dataBase.transaction(function (tx) {		
+	tx.executeSql('SELECT * FROM Books', [], function (tx, results) {		
+	   	$.each(results.rows,function(index,item){		
+			console.log(item);		
+		});		
+	}, null);		
+});*/
