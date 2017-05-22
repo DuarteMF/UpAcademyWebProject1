@@ -296,7 +296,7 @@ $(function() {
 					if (count.rows[0].count==0){
 						tx.executeSql('INSERT INTO Books(id, title, author, opinion, price) VALUES(?,?,?,?,?)',[$id, $title, $author, $opinion, $price]);
 					}else{
-						tx.executeSql('UPDATE Books SET opinion = "' + $opinion + '" WHERE id = "' + $id + '"');
+						tx.executeSql('UPDATE Books SET opinion = (?) WHERE id = (?)',[$opinion, $id]);
 					}
 				});				
 			});
