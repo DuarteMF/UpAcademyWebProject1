@@ -3,6 +3,12 @@ var dislikeN = 0;
 
 var LikeDislikeList = [];
 
+var dataBase = openDatabase("myDatabase", "1.0", "testDB", 2 * 1024 * 1024);
+dataBase.transaction(function(tx){
+	tx.executeSql('CREATE TABLE IF NOT EXISTS Books (id unique, opinion)');
+});
+console.log(dataBase);
+
 var d = new Date();
 document.getElementById("Date").innerHTML = d.toDateString();
 
@@ -36,6 +42,7 @@ function loadData(index, bookDict){
 	<button class="switchImage"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
 	</div>
 	<h2></h2>
+	<input type="hidden" class="hiddenFieldId"></input>
 	<p class="Author"></p>
 	<p class="Categories"></p>
 	<p class="Description ui-widget-content"></p>
@@ -66,7 +73,8 @@ function loadData(index, bookDict){
 	$(".googlePlayLink",$bookID).attr("href", bookDict.volumeInfo.canonicalVolumeLink);
 	$(".PageNumber",$bookID).text(bookDict.volumeInfo.pageCount + " pages");
 	$(".Publisher",$bookID).text("Published by: " + bookDict.volumeInfo.publisher);
-	$(".Rating",$bookID).text("Average Rating: " + bookDict.volumeInfo.averageRating + "/5")
+	$(".Rating",$bookID).text("Average Rating: " + bookDict.volumeInfo.averageRating + "/5");
+	$('.hiddenFieldId',$bookID).text(bookDict.id);
 }
 
 function loadShoppingData(index, bookDict){
@@ -267,6 +275,14 @@ $(function() {
 				$next = $(".Result");
 				$(".row.buttons.active").removeClass("active");
 			}
+
+			// filling out the database with like/dislike info on the books
+			$id = $('.hiddenFieldId',$parent).text();
+			$opinion = $(this).attr('data-opinion');
+			dataBase.transaction(function(tx){
+				tx.executeSql('INSERT INTO Books(id, opinion) VALUES("' + $id + '","' + $opinion + '")');
+			});
+
 			$parent.fadeOut(500, function(){
 				$parent.removeClass("active");
 				$next.fadeIn(500, function(){
@@ -348,3 +364,12 @@ $(function() {
 	}
 	});
 });
+
+// run th following code either in the browser console, or create a new button to run it
+/*dataBase.transaction(function (tx) {
+	tx.executeSql('SELECT * FROM books', [], function (tx, results) {
+	   	$.each(results.rows,function(index,item){
+			console.log(item);
+		});
+	}, null);
+});*/
