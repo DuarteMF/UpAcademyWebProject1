@@ -361,6 +361,7 @@ $(function() {
 		})
   		$("#bookLikes").empty();
   		$("#bookDislikes").empty();
+  		$("#TotalPrice").text("");
 	}
 	});
 });
