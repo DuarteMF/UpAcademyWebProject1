@@ -67,7 +67,11 @@ function loadData(index, bookDict){
 		$(".image2",$bookID).attr("src",bookDict.volumeInfo.imageLinks.smallThumbnail);
 	}	
 	$("h2",$bookID).text(bookDict.volumeInfo.title);
-	$(".Author",$bookID).text("By: " + bookDict.volumeInfo.authors[0]);
+	if(!("undefined" === typeof bookDict.volumeInfo.authors)){
+		$(".Author",$bookID).text("By: " + bookDict.volumeInfo.authors[0]);
+	}else{
+		$(".Author",$bookID).text("No Authors");
+	}	
 	$(".Description",$bookID).html(bookDict.volumeInfo.description);
 	$(".Categories",$bookID).text("Category: " + bookDict.volumeInfo.categories);
 	$(".googleBooksLink",$bookID).attr("href", bookDict.volumeInfo.previewLink);
@@ -156,7 +160,11 @@ function loadSearchData(index, bookDict){
 		$(".image2",$bookID).attr("src",bookDict.volumeInfo.imageLinks.smallThumbnail);
 	}	
 	$("h2",$bookID).text(bookDict.volumeInfo.title);
-	$(".Author",$bookID).text("By: " + bookDict.volumeInfo.authors[0]);
+	if(!("undefined" === typeof bookDict.volumeInfo.authors)){
+		$(".Author",$bookID).text("By: " + bookDict.volumeInfo.authors[0]);
+	}else{
+		$(".Author",$bookID).text("No Authors");
+	}	
 	$(".Description",$bookID).html(bookDict.volumeInfo.description);
 	$(".Categories",$bookID).text("Category: " + bookDict.volumeInfo.categories);
 	$(".googleBooksLink",$bookID).attr("href", bookDict.volumeInfo.previewLink);
@@ -271,14 +279,27 @@ $("#SearchBooksSubmit").click(function(){
 	$.ajax({
 		url:"https://www.googleapis.com/books/v1/volumes?q=" + searchText,
 	}).done(function(data){
-		$(".bookDiv").hide();
-		$(".bookSearchDiv").addClass("active");
-		$.each(data.items,function(index,item){	
-			if(index<10){
-				loadSearchData(index,item);
-				// loadShoppingData(index,item);
-			}			
-		})
+		if($(".bookDiv").hasClass("active")){
+			$(".bookDiv").removeClass("active");
+			$(".bookSearchDiv").addClass("active");
+			$.each(data.items,function(index,item){	
+				if(index<10){
+					console.log(item);
+					loadSearchData(index,item);
+					// loadShoppingData(index,item);
+				}			
+			})
+		}else{
+			$(".bookSearchDiv").empty();
+			$.each(data.items,function(index,item){	
+				if(index<10){
+					console.log(item);
+					loadSearchData(index,item);
+					// loadShoppingData(index,item);
+				}			
+			})
+		}
+		
 	})
 });
 

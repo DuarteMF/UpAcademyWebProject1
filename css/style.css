@@ -341,3 +341,11 @@ td.hide{
 .bookSearchDiv.active{
 	display: block;
 }
+
+.bookDiv{
+	display: none;
+}
+
+.bookDiv.active{
+	display: block;
+}
