@@ -112,7 +112,11 @@ function loadShoppingData(index, bookDict){
 	if(!("undefined" === typeof bookDict.volumeInfo.imageLinks)){
 		$(".itemImage img",$trID).attr("src",bookDict.volumeInfo.imageLinks.thumbnail);
 	}
-	$(".author",$trID).text(bookDict.volumeInfo.authors[0]);
+	if(!("undefined" === typeof bookDict.volumeInfo.authors)){
+		$(".author",$trID).text(bookDict.volumeInfo.authors[0]);
+	}else{
+		$(".author",$trID).text("No Authors");
+	}
 	$(".googlePreview a",$trID).attr("href", bookDict.volumeInfo.previewLink);
 	if(bookDict.saleInfo.saleability == "FOR_SALE"){
 		$(".googlePrice .unitaryPrice",$trID).text(bookDict.saleInfo.retailPrice.amount);
@@ -203,7 +207,7 @@ $(".bookDiv").on("click",".parent button.switchImage", function(){
 	$present.addClass('absent');
 	$absent.removeClass('absent');
 	$absent.addClass('active');
-}) // this function had to be modified because otherwise it would be called before the switch image button was created in the html element, this way it will still recognize the button even if it is created later
+}) 
 
 $("#shopping").click(function(){
 	if(!inAnimation){
@@ -212,11 +216,22 @@ $("#shopping").click(function(){
 		$parent = $(this).parents(".Result");
 
 		$titleList = $(".ShoppingCart table tbody").children("tr").children("td.itemName");
-		$.each($titleList,function(index,value){
-			if(LikeDislikeList[index]=="like"){
-				$(value).parents("tr").addClass("active");
-			}
-		})
+		if($(".bookDiv").hasClass("active")){
+			$.each($titleList,function(index,value){
+				if(LikeDislikeList[index]=="like"){
+					$(value).parents("tr").addClass("active");
+				}
+			})
+		}else{
+			$.each($titleList,function(index,value){
+				if(index>=$(".bookDiv .book").length){
+					if(LikeDislikeList[index - $(".bookDiv .book").length]=="like"){
+						$(value).parents("tr").addClass("active");
+					}
+				}				
+			})
+		}
+		
 
 		$parent.fadeOut(500, function(){
 			$parent.removeClass("active");
@@ -265,43 +280,12 @@ $("#calculateTotal").click(function(){
 	$individualPriceArray = $("tr.active td.price .totalBookPrice");
 	var total = 0;
 	$individualPriceArray.each(function(index,value){
-		// console.log(value.textContent)
 		total = total + parseFloat(value.textContent);
 				
 	});
 	$("#TotalPrice").text((Math.round(total*100)/100) + $(".currency:not(:empty)").first()[0].textContent);
 });
 
-$("#SearchBooksSubmit").click(function(){
-	$searchInput = $("#SearchBooks");
-	var searchText = $searchInput[0].value;
-
-	$.ajax({
-		url:"https://www.googleapis.com/books/v1/volumes?q=" + searchText,
-	}).done(function(data){
-		if($(".bookDiv").hasClass("active")){
-			$(".bookDiv").removeClass("active");
-			$(".bookSearchDiv").addClass("active");
-			$.each(data.items,function(index,item){	
-				if(index<10){
-					console.log(item);
-					loadSearchData(index,item);
-					// loadShoppingData(index,item);
-				}			
-			})
-		}else{
-			$(".bookSearchDiv").empty();
-			$.each(data.items,function(index,item){	
-				if(index<10){
-					console.log(item);
-					loadSearchData(index,item);
-					// loadShoppingData(index,item);
-				}			
-			})
-		}
-		
-	})
-});
 
 $(function() {
 	
@@ -320,7 +304,12 @@ $(function() {
 	});
 
 	function progress() {
-		$allBooks = $(".book", ".bookDiv");
+		if($(".bookDiv").hasClass("active")){
+  			$currentDiv = $(".bookDiv");
+  		}else{
+  			$currentDiv = $(".bookSearchDiv");
+  		}
+		$allBooks = $(".book", $currentDiv);
 		$current = $allBooks.parent().find('.book.active');
 		var index = $allBooks.index($current);
 
@@ -339,7 +328,12 @@ $(function() {
 
 	$("#buttonLike").click(function(){
 		if(!inAnimation){
-			$parent = $(".book.active");
+			if($(".bookDiv").hasClass("active")){
+  				$currentDiv = $(".bookDiv");
+  			}else{
+  				$currentDiv = $(".bookSearchDiv");
+  			}
+			$parent = $(".book.active", $currentDiv);
 			likeN++;
 			LikeDislikeList.push("like");
 
@@ -350,7 +344,12 @@ $(function() {
 
 	$("#buttonDislike").click(function(){
 		if(!inAnimation){
-			$parent = $(".book.active");
+			if($(".bookDiv").hasClass("active")){
+  				$currentDiv = $(".bookDiv");
+  			}else{
+  				$currentDiv = $(".bookSearchDiv");
+  			}
+			$parent = $(".book.active", $currentDiv);
 			dislikeN++;
 			LikeDislikeList.push("dislike");
 
@@ -362,8 +361,13 @@ $(function() {
 	$("#buttonLike, #buttonDislike").click(function(){
   		if(!inAnimation){
   			inAnimation = true;
-  			$allBooks = $(".book", ".bookDiv");
-  			$parent = $(".book.active");
+  			if($(".bookDiv").hasClass("active")){
+  				$allBooks = $(".book", ".bookDiv");
+  			}else{
+  				$allBooks = $(".book", ".bookSearchDiv");
+  			}
+  			
+  			$parent = $(".book.active", $allBooks.parent());
   			var index = $allBooks.index($parent);
   			if(index+1<$allBooks.length){
 				$next = $parent.next();// I don't use next(".book"), because after my final book I have a tally
@@ -477,6 +481,42 @@ $(function() {
   		$("#TotalPrice").text("");
 	}
 	});
+
+	$("#SearchBooksSubmit").click(function(){
+	$searchInput = $("#SearchBooks");
+	var searchText = $searchInput[0].value;
+
+	$.ajax({
+		url:"https://www.googleapis.com/books/v1/volumes?q=" + searchText,
+	}).done(function(data){
+		if($(".bookDiv").hasClass("active")){
+			$(".bookDiv").removeClass("active");
+			$(".bookSearchDiv").addClass("active");
+			$.each(data.items,function(index,item){	
+				if(index<10){
+					// console.log(item);
+					loadSearchData(index,item);
+					loadShoppingData(index + $(".bookDiv .book").length,item);
+				}			
+			})
+		}else{
+			$(".bookSearchDiv").empty();
+			$ShoppingCartList = $(".ShoppingCart table tbody").children("tr");
+			$.each($ShoppingCartList,function(index,item){
+				if(index>$(".bookDiv .book").length)
+					item.remove();
+			});
+			$.each(data.items,function(index,item){	
+				if(index<10){
+					// console.log(item);
+					loadSearchData(index,item);
+					loadShoppingData(index + $(".bookDiv .book").length,item);
+				}			
+			});
+		}
+		
+	})
+});
 });
 
 // run th following code either in the browser console, or create a new button to run it
