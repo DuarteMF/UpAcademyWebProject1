@@ -333,3 +333,11 @@ td.hide{
 #backButton.active{
 	display: inline-block;
 }
+
+.bookSearchDiv{
+	display: none;
+}
+
+.bookSearchDiv.active{
+	display: block;
+}

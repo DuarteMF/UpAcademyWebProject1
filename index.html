@@ -43,12 +43,12 @@
 							</ul>
 						</li>
 					</ul>
-					<form class="navbar-form navbar-left">
+					<div class="navbar-form navbar-left">
 						<div class="form-group">
-							<input type="text" class="form-control" placeholder="Search">
+							<input type="text" class="form-control" placeholder="Search" id="SearchBooks">
 						</div>
-						<button type="submit" class="btn btn-default">Go</button>
-					</form>
+						<button type="button" class="btn btn-default" id="SearchBooksSubmit">Go</button>
+					</div>
 					<ul class="nav navbar-nav navbar-right">
 						<li><a href="#">Contact</a></li>
 						<li><a href="#"><span class="glyphicon glyphicon-shopping-cart"></span>Shopping</a></li>
@@ -73,6 +73,10 @@
 		<div class="row">
 			<div class="bookDiv">
 			<!--This is where the books will be added-->
+			</div>
+
+			<div class="bookSearchDiv">
+				<!-- This is where the books from the search will be shown -->
 			</div>
 			
 			<div class="row buttons active col-xs-10 col-xs-offset-1 col-md-6 col-md-offset-3">
@@ -111,24 +115,26 @@
 
 
 			<div class="ShoppingCart col-xs-10 col-xs-offset-1 AfterBooks"> 
-			<table>
-				<tr id="TableHeader" class="active">
-					<th class="itemName">Book Name</th>
-					<th class="itemImage">Cover</th>
-					<th class="author">Author</th>
-					<th class="googlePreview">Preview</th>
-					<th class="googlePrice"><img src="images/Google_Play_logo.png" width=75px height=32px></th>
-					<th class="quantity">Quantity</th>
-			        <th class="price">Price</th>
-				</tr>
-				<!--This is where the book rows will show up-->
-			</table>
-			<br>
-			<br>
-			<button id="calculateTotal">Calculate Total</button>
-			<h1 id="TotalPrice"></h1>
-			<button class="backToStart">Restart</button>
+				<table>
+					<tr id="TableHeader" class="active">
+						<th class="itemName">Book Name</th>
+						<th class="itemImage">Cover</th>
+						<th class="author">Author</th>
+						<th class="googlePreview">Preview</th>
+						<th class="googlePrice"><img src="images/Google_Play_logo.png" width=75px height=32px></th>
+						<th class="quantity">Quantity</th>
+				        <th class="price">Price</th>
+					</tr>
+					<!--This is where the book rows will show up-->
+				</table>
+				<br>
+				<br>
+				<button id="calculateTotal">Calculate Total</button>
+				<h1 id="TotalPrice"></h1>
+				<button class="backToStart">Restart</button>
 			</div>
+
+			
 
 		</div>
 	</div>

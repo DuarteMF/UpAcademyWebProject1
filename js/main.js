@@ -61,7 +61,7 @@ function loadData(index, bookDict){
 	if(index==0){
 		$("#BookNum1").addClass("active");
 	}
-	$bookID = $(".book").eq(index);
+	$bookID = $(".book", ".bookDiv").eq(index);
 	if(!("undefined" === typeof bookDict.volumeInfo.imageLinks)){
 		$(".image1",$bookID).attr("src",bookDict.volumeInfo.imageLinks.thumbnail);
 		$(".image2",$bookID).attr("src",bookDict.volumeInfo.imageLinks.smallThumbnail);
@@ -119,6 +119,57 @@ function loadShoppingData(index, bookDict){
 		$(".price",$trID).addClass("hide");
 	}	
 	
+}
+
+function loadSearchData(index, bookDict){
+	$bookParent = $(".bookSearchDiv");
+	ID = "BookSearchNum" + (index+1);
+	var insertBookHTML = `<div class="book col-xs-10 col-xs-offset-1 col-md-6 col-md-offset-3" id="` + ID + `">
+	<div class="parent">
+	<img class="image1 active">					
+	<img class="image2 absent">
+	<button class="switchImage"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+	</div>
+	<h2></h2>
+	<input type="hidden" class="hiddenFieldId"></input>
+	<input type="hidden" class="hiddenFieldPrice"></input>
+	<p class="Author"></p>
+	<p class="Categories"></p>
+	<p class="Description ui-widget-content"></p>
+	<p class="PageNumber"></p>
+	<p class="Publisher"></p>
+	<p class="Rating"></p>
+	<p>
+	<div class="row">
+	<a class="googleBooksLink link1 col-xs-6" target="_blank"><img src="images/Google_Books_logo.png" width=130px height=50px></a>
+	<a class="googlePlayLink link2 col-xs-6" target="_blank"><img src="images/Google_Play_logo.png" width=130px height=50px></a>
+	</div>
+	</p>
+	</div>`
+	$bookParent.append(insertBookHTML);
+	if(index==0){
+		$("#BookSearchNum1").addClass("active");
+	}
+	$bookID = $(".book", ".bookSearchDiv").eq(index);
+	if(!("undefined" === typeof bookDict.volumeInfo.imageLinks)){
+		$(".image1",$bookID).attr("src",bookDict.volumeInfo.imageLinks.thumbnail);
+		$(".image2",$bookID).attr("src",bookDict.volumeInfo.imageLinks.smallThumbnail);
+	}	
+	$("h2",$bookID).text(bookDict.volumeInfo.title);
+	$(".Author",$bookID).text("By: " + bookDict.volumeInfo.authors[0]);
+	$(".Description",$bookID).html(bookDict.volumeInfo.description);
+	$(".Categories",$bookID).text("Category: " + bookDict.volumeInfo.categories);
+	$(".googleBooksLink",$bookID).attr("href", bookDict.volumeInfo.previewLink);
+	$(".googlePlayLink",$bookID).attr("href", bookDict.volumeInfo.canonicalVolumeLink);
+	$(".PageNumber",$bookID).text(bookDict.volumeInfo.pageCount + " pages");
+	$(".Publisher",$bookID).text("Published by: " + bookDict.volumeInfo.publisher);
+	$(".Rating",$bookID).text("Average Rating: " + bookDict.volumeInfo.averageRating + "/5");
+	$('.hiddenFieldId',$bookID).text(bookDict.id);
+	if(bookDict.saleInfo.saleability == "FOR_SALE"){
+		$('.hiddenFieldPrice',$bookID).text(bookDict.saleInfo.retailPrice.amount + currency_symbols[bookDict.saleInfo.retailPrice.currencyCode]);
+	}else{
+		$('.hiddenFieldPrice',$bookID).text("Unavailable!");
+	}
 }
 
 var APIkey = "AIzaSyCEb5zro0QNPnPMooqx4s0tMcv04k4YSgc";
@@ -213,6 +264,24 @@ $("#calculateTotal").click(function(){
 	$("#TotalPrice").text((Math.round(total*100)/100) + $(".currency:not(:empty)").first()[0].textContent);
 });
 
+$("#SearchBooksSubmit").click(function(){
+	$searchInput = $("#SearchBooks");
+	var searchText = $searchInput[0].value;
+
+	$.ajax({
+		url:"https://www.googleapis.com/books/v1/volumes?q=" + searchText,
+	}).done(function(data){
+		$(".bookDiv").hide();
+		$(".bookSearchDiv").addClass("active");
+		$.each(data.items,function(index,item){	
+			if(index<10){
+				loadSearchData(index,item);
+				// loadShoppingData(index,item);
+			}			
+		})
+	})
+});
+
 $(function() {
 	
 
@@ -230,7 +299,7 @@ $(function() {
 	});
 
 	function progress() {
-		$allBooks = $(".book");
+		$allBooks = $(".book", ".bookDiv");
 		$current = $allBooks.parent().find('.book.active');
 		var index = $allBooks.index($current);
 
@@ -272,7 +341,7 @@ $(function() {
 	$("#buttonLike, #buttonDislike").click(function(){
   		if(!inAnimation){
   			inAnimation = true;
-  			$allBooks = $(".book");
+  			$allBooks = $(".book", ".bookDiv");
   			$parent = $(".book.active");
   			var index = $allBooks.index($parent);
   			if(index+1<$allBooks.length){
@@ -320,7 +389,7 @@ $(function() {
 	$("#backButton").click(function(){
 		if(!inAnimation){
   			inAnimation = true;
-			$allBooks = $(".book");
+			$allBooks = $(".book", ".bookDiv");
   			$parent = $(".book.active");
   			$previous = $parent.prev();
 			
