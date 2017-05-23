@@ -1,13 +1,14 @@
 var likeN = 0;
 var dislikeN = 0;
 
+var currentIndex;
+
 var LikeDislikeList = [];
 
-var dataBase = openDatabase("myDatabase", "1.0", "testDB", 2 * 1024 * 1024);
-dataBase.transaction(function(tx){
-	//tx.executeSql('DROP TABLE Books');
-	tx.executeSql('CREATE TABLE IF NOT EXISTS Books (id unique, title, author, opinion, price)');
-});
+var APIkey = "AIzaSyCEb5zro0QNPnPMooqx4s0tMcv04k4YSgc";
+var UserID = "117330412869481617595";
+var ShelfID = "1001";
+var clientID = "883774612498-9qjo0fhi51u9n68vu6do0ebi7gpks352.apps.googleusercontent.com";
 
 var d = new Date();
 document.getElementById("Date").innerHTML = d.toDateString();
@@ -31,6 +32,12 @@ var currency_symbols = {
     'UAH': '₴', // Ukrainian Hryvnia
     'VND': '₫', // Vietnamese Dong
 };
+
+var dataBase = openDatabase("myDatabase", "1.0", "testDB", 2 * 1024 * 1024);
+dataBase.transaction(function(tx){
+	//tx.executeSql('DROP TABLE Books');
+	tx.executeSql('CREATE TABLE IF NOT EXISTS Books (id unique, title, author, opinion, price)');
+});
 
 function loadData(index, bookDict){
 	$bookParent = $(".bookDiv");
@@ -129,75 +136,16 @@ function loadShoppingData(index, bookDict){
 	
 }
 
-function loadSearchData(index, bookDict){
-	$bookParent = $(".bookSearchDiv");
-	ID = "BookSearchNum" + (index+1);
-	var insertBookHTML = `<div class="book col-xs-10 col-xs-offset-1 col-md-6 col-md-offset-3" id="` + ID + `">
-	<div class="parent">
-	<img class="image1 active">					
-	<img class="image2 absent">
-	<button class="switchImage"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
-	</div>
-	<h2></h2>
-	<input type="hidden" class="hiddenFieldId"></input>
-	<input type="hidden" class="hiddenFieldPrice"></input>
-	<p class="Author"></p>
-	<p class="Categories"></p>
-	<p class="Description ui-widget-content"></p>
-	<p class="PageNumber"></p>
-	<p class="Publisher"></p>
-	<p class="Rating"></p>
-	<p>
-	<div class="row">
-	<a class="googleBooksLink link1 col-xs-6" target="_blank"><img src="images/Google_Books_logo.png" width=130px height=50px></a>
-	<a class="googlePlayLink link2 col-xs-6" target="_blank"><img src="images/Google_Play_logo.png" width=130px height=50px></a>
-	</div>
-	</p>
-	</div>`
-	$bookParent.append(insertBookHTML);
-	if(index==0){
-		$("#BookSearchNum1").addClass("active");
-	}
-	$bookID = $(".book", ".bookSearchDiv").eq(index);
-	if(!("undefined" === typeof bookDict.volumeInfo.imageLinks)){
-		$(".image1",$bookID).attr("src",bookDict.volumeInfo.imageLinks.thumbnail);
-		$(".image2",$bookID).attr("src",bookDict.volumeInfo.imageLinks.smallThumbnail);
-	}	
-	$("h2",$bookID).text(bookDict.volumeInfo.title);
-	if(!("undefined" === typeof bookDict.volumeInfo.authors)){
-		$(".Author",$bookID).text("By: " + bookDict.volumeInfo.authors[0]);
-	}else{
-		$(".Author",$bookID).text("No Authors");
-	}	
-	$(".Description",$bookID).html(bookDict.volumeInfo.description);
-	$(".Categories",$bookID).text("Category: " + bookDict.volumeInfo.categories);
-	$(".googleBooksLink",$bookID).attr("href", bookDict.volumeInfo.previewLink);
-	$(".googlePlayLink",$bookID).attr("href", bookDict.volumeInfo.canonicalVolumeLink);
-	$(".PageNumber",$bookID).text(bookDict.volumeInfo.pageCount + " pages");
-	$(".Publisher",$bookID).text("Published by: " + bookDict.volumeInfo.publisher);
-	$(".Rating",$bookID).text("Average Rating: " + bookDict.volumeInfo.averageRating + "/5");
-	$('.hiddenFieldId',$bookID).text(bookDict.id);
-	if(bookDict.saleInfo.saleability == "FOR_SALE"){
-		$('.hiddenFieldPrice',$bookID).text(bookDict.saleInfo.retailPrice.amount + currency_symbols[bookDict.saleInfo.retailPrice.currencyCode]);
-	}else{
-		$('.hiddenFieldPrice',$bookID).text("Unavailable!");
-	}
-}
 
-var APIkey = "AIzaSyCEb5zro0QNPnPMooqx4s0tMcv04k4YSgc";
-var UserID = "117330412869481617595";
-var ShelfID = "1001";
-var clientID = "883774612498-9qjo0fhi51u9n68vu6do0ebi7gpks352.apps.googleusercontent.com"
-
-$.ajax({
-	url:"https://www.googleapis.com/books/v1/users/" + UserID + "/bookshelves/" + ShelfID + "/volumes?key=" + APIkey,
-}).done(function(data){
-	$.each(data.items,function(index,item){	
-		// console.log(item)
-		loadData(index,item);
-		loadShoppingData(index,item);
-	})
-});
+// $.ajax({
+// 	url:"https://www.googleapis.com/books/v1/users/" + UserID + "/bookshelves/" + ShelfID + "/volumes?key=" + APIkey,
+// }).done(function(data){
+// 	$.each(data.items,function(index,item){	
+// 		// console.log(item)
+// 		loadData(index,item);
+// 		loadShoppingData(index,item);
+// 	})
+// });
 
 $(".bookDiv").on("click",".parent button.switchImage", function(){
 	$parent = $(this).parents(".parent");
@@ -209,38 +157,39 @@ $(".bookDiv").on("click",".parent button.switchImage", function(){
 	$absent.addClass('active');
 }) 
 
-$("#shopping").click(function(){
-	if(!inAnimation){
-		inAnimation = true;
-		$ShoppingCart = $(".ShoppingCart");
-		$parent = $(this).parents(".Result");
+$("#ListButton").click(function(){
+	if($(".bookDiv").css("display")!="none"){
+		$(".bookDiv").hide();
+		$(".buttons").removeClass("active");
+	}
+	if($(".ShoppingCart").css("display")!="none"){
+		$(".ShoppingCart").hide();
+	}
+	if($(".Result").css("display")=="none"){
+		$(".Result").show();
+	}	
+})
 
-		$titleList = $(".ShoppingCart table tbody").children("tr").children("td.itemName");
-		if($(".bookDiv").hasClass("active")){
-			$.each($titleList,function(index,value){
-				if(LikeDislikeList[index]=="like"){
-					$(value).parents("tr").addClass("active");
-				}
-			})
-		}else{
-			$.each($titleList,function(index,value){
-				if(index>=$(".bookDiv .book").length){
-					if(LikeDislikeList[index - $(".bookDiv .book").length]=="like"){
-						$(value).parents("tr").addClass("active");
-					}
-				}				
-			})
+$("#ShoppingButton, #shopping").click(function(){
+	$ShoppingCart = $(".ShoppingCart");
+
+	$titleList = $(".ShoppingCart table tbody").children("tr").children("td.itemName");
+	$.each($titleList,function(index,value){
+		if(LikeDislikeList[index]=="like"){
+			$(value).parents("tr").addClass("active");
 		}
-		
-
-		$parent.fadeOut(500, function(){
-			$parent.removeClass("active");
-			$ShoppingCart.fadeIn(500, function(){
-				$ShoppingCart.addClass("active");
-				inAnimation = false;
-			})	
-		})
-	}		
+	})
+	
+	if($(".bookDiv").css("display")!="none"){
+		$(".bookDiv").hide();
+		$(".buttons").removeClass("active");
+	}
+	if($(".Result").css("display")!="none"){
+		$(".Result").hide();
+	}	
+	if($ShoppingCart.css("display")=="none"){
+		$ShoppingCart.show();
+	}
 });
 
 $(".ShoppingCart").on("click",".minus-btn", function(){
@@ -286,54 +235,48 @@ $("#calculateTotal").click(function(){
 	$("#TotalPrice").text((Math.round(total*100)/100) + $(".currency:not(:empty)").first()[0].textContent);
 });
 
+function searchData(){
+	$searchInput = $("#SearchBooks");
+	var searchText = $searchInput[0].value;
 
-$(function() {
-	
-
-	var progressbar = $( "#progressbar" ),
-	progressLabel = $( ".progress-label" );
-
-	progressbar.progressbar({
-		value: false,
-		change: function() {
-			progressLabel.text( progressbar.progressbar( "value" ) + "%" );
-		},
-		complete: function() {
-			progressLabel.text( "Complete!" );
-		}
+	$.ajax({
+		url:"https://www.googleapis.com/books/v1/volumes?q=" + searchText + "&startIndex=" + currentIndex,
+	}).done(function(data){
+		$(".bookDiv").empty();
+		$ShoppingCartList = $(".ShoppingCart table tbody").children("tr");
+		// $.each($ShoppingCartList,function(index,item){
+		// 	if(index>$(".bookDiv .book").length){
+		// 		item.remove();
+		// 	}
+		// });
+		$.each(data.items,function(index,item){	
+			if(index<10){
+				// console.log(item);
+				loadData(index,item);
+				loadShoppingData(index,item);
+			}			
+		});
+	$(".buttons").addClass("active");		
 	});
+}
 
-	function progress() {
-		if($(".bookDiv").hasClass("active")){
-  			$currentDiv = $(".bookDiv");
-  		}else{
-  			$currentDiv = $(".bookSearchDiv");
-  		}
-		$allBooks = $(".book", $currentDiv);
-		$current = $allBooks.parent().find('.book.active');
-		var index = $allBooks.index($current);
+$("#SearchBooksSubmit").click(function(){
+	currentIndex = 0;
+	searchData();
+});
 
-      if(index == -1){//index não existe na lista
-      	progressCount = 100;
-      } 
-      else{
-      	progressCount = ((index)/$allBooks.length)*100;
-      }
-
-      progressbar.progressbar( "value", Math.round(progressCount*10)/10 );
-  }
-
-  setTimeout( progress, 2000 );
+$("#SearchBooks").keyup(function(event){
+	if(event.which == 13) {
+		currentIndex = 0;
+		searchData();
+	}	
+});
 
 
+$(function(){	
 	$("#buttonLike").click(function(){
 		if(!inAnimation){
-			if($(".bookDiv").hasClass("active")){
-  				$currentDiv = $(".bookDiv");
-  			}else{
-  				$currentDiv = $(".bookSearchDiv");
-  			}
-			$parent = $(".book.active", $currentDiv);
+			$parent = $(".book.active");
 			likeN++;
 			LikeDislikeList.push("like");
 
@@ -344,12 +287,7 @@ $(function() {
 
 	$("#buttonDislike").click(function(){
 		if(!inAnimation){
-			if($(".bookDiv").hasClass("active")){
-  				$currentDiv = $(".bookDiv");
-  			}else{
-  				$currentDiv = $(".bookSearchDiv");
-  			}
-			$parent = $(".book.active", $currentDiv);
+			$parent = $(".book.active");
 			dislikeN++;
 			LikeDislikeList.push("dislike");
 
@@ -361,19 +299,20 @@ $(function() {
 	$("#buttonLike, #buttonDislike").click(function(){
   		if(!inAnimation){
   			inAnimation = true;
-  			if($(".bookDiv").hasClass("active")){
-  				$allBooks = $(".book", ".bookDiv");
-  			}else{
-  				$allBooks = $(".book", ".bookSearchDiv");
-  			}
-  			
-  			$parent = $(".book.active", $allBooks.parent());
+  			$allBooks = $(".book");
+  			$parent = $(".book.active");
   			var index = $allBooks.index($parent);
-  			if(index+1<$allBooks.length){
-				$next = $parent.next();// I don't use next(".book"), because after my final book I have a tally
+  			// if(index+1<$allBooks.length){
+			// 	$next = $parent.next();
+			// }else{
+			// 	$next = $(".Result");
+			// 	$(".row.buttons.active").removeClass("active");
+			// }
+
+			if(index+1<$allBooks.length){
+				$next = $parent.next();
 			}else{
-				$next = $(".Result");
-				$(".row.buttons.active").removeClass("active");
+				$next = $(".book:first-of-type");
 			}
 
 
@@ -395,16 +334,19 @@ $(function() {
 				});				
 			});
 
+			currentIndex++
+			if((currentIndex%10)==0){
+				searchData();
+			}
+
 			$parent.fadeOut(500, function(){
 				$parent.removeClass("active");
 				$next.fadeIn(500, function(){
 					$next.addClass("active");
-					if($allBooks.index($parent)==0){
+					if(currentIndex-1==0){
 						$("#backButton").addClass("active");
-					}else if($allBooks.index($parent)==$allBooks.length-1){
-						$("#backButton").removeClass("active");
 					}
-					progress();
+					// progress();
 					inAnimation = false;
 				})	
 			})
@@ -414,7 +356,7 @@ $(function() {
 	$("#backButton").click(function(){
 		if(!inAnimation){
   			inAnimation = true;
-			$allBooks = $(".book", ".bookDiv");
+			$allBooks = $(".book");
   			$parent = $(".book.active");
   			$previous = $parent.prev();
 			
@@ -455,68 +397,32 @@ $(function() {
 	$(".backToStart").click(function(){
 		if(!inAnimation){
 				inAnimation = true;
-		likeN = 0;
-		dislikeN = 0;
-		LikeDislikeList = [];
+			likeN = 0;
+			dislikeN = 0;
+			LikeDislikeList = [];
 
-		$start = $(".book:first-of-type");
-		$parent = $(this).parents(".AfterBooks");
-		$parent.fadeOut(500, function(){
-			$parent.removeClass("active");
-			$start.fadeIn(500, function(){
-				$(".row.buttons").addClass("active");
-				$start.addClass("active");
-				progress();
-				inAnimation = false;
-			})	
-		})
-		$activetitleList = $(".ShoppingCart table tbody").children("tr.active");
-		$.each($activetitleList, function(index,item){
-			if(index!=0){
-				$(item).removeClass("active");
-			}
-		})
-  		$("#bookLikes").empty();
-  		$("#bookDislikes").empty();
-  		$("#TotalPrice").text("");
-	}
-	});
-
-	$("#SearchBooksSubmit").click(function(){
-	$searchInput = $("#SearchBooks");
-	var searchText = $searchInput[0].value;
-
-	$.ajax({
-		url:"https://www.googleapis.com/books/v1/volumes?q=" + searchText,
-	}).done(function(data){
-		if($(".bookDiv").hasClass("active")){
-			$(".bookDiv").removeClass("active");
-			$(".bookSearchDiv").addClass("active");
-			$.each(data.items,function(index,item){	
-				if(index<10){
-					// console.log(item);
-					loadSearchData(index,item);
-					loadShoppingData(index + $(".bookDiv .book").length,item);
-				}			
+			$start = $(".book:first-of-type");
+			$parent = $(this).parents(".AfterBooks");
+			$parent.fadeOut(500, function(){
+				$parent.removeClass("active");
+				$start.fadeIn(500, function(){
+					$(".row.buttons").addClass("active");
+					$start.addClass("active");
+					progress();
+					inAnimation = false;
+				})	
 			})
-		}else{
-			$(".bookSearchDiv").empty();
-			$ShoppingCartList = $(".ShoppingCart table tbody").children("tr");
-			$.each($ShoppingCartList,function(index,item){
-				if(index>$(".bookDiv .book").length)
-					item.remove();
-			});
-			$.each(data.items,function(index,item){	
-				if(index<10){
-					// console.log(item);
-					loadSearchData(index,item);
-					loadShoppingData(index + $(".bookDiv .book").length,item);
-				}			
-			});
-		}
-		
-	})
-});
+			$activetitleList = $(".ShoppingCart table tbody").children("tr.active");
+			$.each($activetitleList, function(index,item){
+				if(index!=0){
+					$(item).removeClass("active");
+				}
+			})
+  			$("#bookLikes").empty();
+  			$("#bookDislikes").empty();
+  			$("#TotalPrice").text("");
+  		}
+	});
 });
 
 // run th following code either in the browser console, or create a new button to run it

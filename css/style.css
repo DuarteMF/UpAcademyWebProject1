@@ -40,10 +40,6 @@ However it was not done this way because eventually we will only show 1 book at 
 	border-radius: 10px;
 }
 
-.Result.active, .ShoppingCart.active{
-	display: block;
-}
-
 .book {
 	display: none;
 	justify-content: space-around;
@@ -332,20 +328,4 @@ td.hide{
 
 #backButton.active{
 	display: inline-block;
-}
-
-.bookSearchDiv{
-	display: none;
-}
-
-.bookSearchDiv.active{
-	display: block;
-}
-
-.bookDiv{
-	display: none;
-}
-
-.bookDiv.active{
-	display: block;
 }
