@@ -287,7 +287,7 @@ td.hide{
 	background: none;
 	border: none;
 	font-size: 40px;
-	background-color: white;
+	color: white;
 }
 
 #backButton.active{
