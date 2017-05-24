@@ -436,22 +436,18 @@ $(function(){
 			dislikeN = 0;
 			LikeDislikeList = [];
 
-			$start = $(".book:first-of-type");
+			$start = $(".introductionText");
 			$parent = $(this).parents(".AfterBooks");
 			$parent.fadeOut(500, function(){
 				$parent.removeClass("active");
 				$start.fadeIn(500, function(){
-					$(".row.buttons").addClass("active");
-					$start.addClass("active");
-					progress();
+					$start.show();
 					inAnimation = false;
 				})	
 			})
-			$activetitleList = $(".ShoppingCart table tbody").children("tr.active");
-			$.each($activetitleList, function(index,item){
-				if(index!=0){
-					$(item).removeClass("active");
-				}
+			$titleList = $(".ShoppingCart table tbody").children("tr:not(:first-of-type)");
+			$.each($titleList, function(index,item){
+				item.remove();	
 			})
   			$("#bookLikes").empty();
   			$("#bookDislikes").empty();
