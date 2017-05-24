@@ -18,18 +18,6 @@ html {
 	width: 100%;
 }
 
-/* This commented out code is for a responsive 3-book display,
-However it was not done this way because eventually we will only show 1 book at a time
-.container{
-	display: flex;
-	justify-content: space-around;
-	flex-wrap: wrap;
-}*/
-
-/*.ShoppingCart{
-	width: auto;
-}*/
-
 .Result, .ShoppingCart{
 	display: none;
 	justify-content: space-around;
@@ -108,45 +96,15 @@ button.Like {
 	background-color: green;
 }
 
-/*.Dislike {
-	float:left;
-	width: 45%;
-}*/
-
-/*.Like {
-	float:right;
-	width: 45%;
-}*/
-
-/*.link1 {
-	float: left;
-	width: 45%;
-	margin-left: 10px;
-}
-
-.link2 {
-	float: right;
-	width: 45%;
-	text-align: right;
-	margin-right: 10px;
-}*/
-
 header{	
-	/*display:flex;
-	justify-content: space-around;
-	flex-wrap: wrap;*/
 	background-color: #082567;
 	color:white;
 	width: 100%;
 	padding:0px;
-	/*font-size: 20px;*/
 	margin-bottom: 10px;
 }
 
 footer {
-	/*display:flex;
-	justify-content: space-around;
-	flex-wrap: wrap;*/
 	background-color: #082567;
 	color:white;
 	width: 100%;
@@ -328,4 +286,18 @@ td.hide{
 
 #backButton.active{
 	display: inline-block;
+}
+
+div.navbar-form {
+	display: inline-block;
+}
+
+fieldset{
+	display: inline-block;
+	color: black;
+	height: 34px;
+}
+
+#SearchBooksCategory{
+	height: 100%;
 }

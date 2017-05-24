@@ -33,6 +33,20 @@
 						<div class="form-group">
 							<input type="text" class="form-control" placeholder="Search" id="SearchBooks">
 						</div>
+						<fieldset>
+						<!-- <label for="Category">Select a speed</label> -->
+							<select name="Category" id="SearchBooksCategory">
+								<option selected="selected" value="default">Please choose an option</option>
+								<option value="Title">Title</option>
+								<option value="Author">Author</option>
+								<option value="Publisher">Publisher</option>
+								<option value="Category">Category</option>
+								<option value="ISBN">ISBN</option>
+							</select>
+						</fieldset>
+						<div class="form-group">
+							<input type="text" class="form-control" placeholder="Search" id="SearchBooksCategoryText">
+						</div>
 						<button type="button" class="btn btn-default" id="SearchBooksSubmit">Go</button>
 					</div>
 					<ul class="nav navbar-nav navbar-right">

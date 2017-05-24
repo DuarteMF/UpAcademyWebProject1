@@ -96,7 +96,7 @@ function loadData(index, bookDict){
 
 function loadShoppingData(index, bookDict){
 	$table = $(".ShoppingCart table");
-	ID = "BookNumber" + (index+1);
+	ID = "BookNumber" + (currentIndex + index + 1);
 	var insertTableRowHTML = `<tr id="` + ID + `">
 	<td class="itemName"></td>
 	<td class="itemImage"><img style="max-height:100px;"></td>
@@ -114,7 +114,7 @@ function loadShoppingData(index, bookDict){
 	<td class="price"><label class="totalBookPrice">0</label><label class="currency"></label></td>
 	</tr>`
 	$table.append(insertTableRowHTML);
-	$trID = $("tr").eq(index+1);
+	$trID = $("tr").eq(currentIndex + index + 1);
 	$(".itemName",$trID).text(bookDict.volumeInfo.title);
 	if(!("undefined" === typeof bookDict.volumeInfo.imageLinks)){
 		$(".itemImage img",$trID).attr("src",bookDict.volumeInfo.imageLinks.thumbnail);
@@ -161,6 +161,7 @@ $("#ListButton").click(function(){
 	if($(".bookDiv").css("display")!="none"){
 		$(".bookDiv").hide();
 		$(".buttons").removeClass("active");
+		$("#backButton").removeClass("active");
 	}
 	if($(".ShoppingCart").css("display")!="none"){
 		$(".ShoppingCart").hide();
@@ -183,6 +184,7 @@ $("#ShoppingButton, #shopping").click(function(){
 	if($(".bookDiv").css("display")!="none"){
 		$(".bookDiv").hide();
 		$(".buttons").removeClass("active");
+		$("#backButton").removeClass("active");
 	}
 	if($(".Result").css("display")!="none"){
 		$(".Result").hide();
@@ -236,11 +238,41 @@ $("#calculateTotal").click(function(){
 });
 
 function searchData(){
-	$searchInput = $("#SearchBooks");
-	var searchText = $searchInput[0].value;
+	var searchText = $("#SearchBooks").val();
+
+	var searchCategoryName =  $("#SearchBooksCategory option:selected").val()
+
+	var searchCategoryText = $("#SearchBooksCategoryText").val();
+
+	var categoryID = "";
+	if(!(searchCategoryName == "default") && (!("undefined" === typeof searchCategoryText) && !(searchCategoryText == ""))){
+		switch(searchCategoryName){
+			case "Title":
+				categoryID = "+intitle:";
+				break;
+			case "Author":
+				categoryID = "+inauthor:";
+				break;
+			case "Publisher":
+				categoryID = "+inpublisher:";
+				break;
+			case "Category":
+				categoryID = "+insubject:";
+				break;
+			case "ISBN":
+				categoryID = "+isbn:";
+				break;
+			default:
+				categoryID = "";
+		}
+	}else{
+		searchCategoryText = "";
+	}
+
+	q = searchText + categoryID + searchCategoryText
 
 	$.ajax({
-		url:"https://www.googleapis.com/books/v1/volumes?q=" + searchText + "&startIndex=" + currentIndex,
+		url:"https://www.googleapis.com/books/v1/volumes?q=" + q + "&startIndex=" + currentIndex,
 	}).done(function(data){
 		$(".bookDiv").empty();
 		$ShoppingCartList = $(".ShoppingCart table tbody").children("tr");
@@ -251,7 +283,7 @@ function searchData(){
 		// });
 		$.each(data.items,function(index,item){	
 			if(index<10){
-				// console.log(item);
+				console.log(item);
 				loadData(index,item);
 				loadShoppingData(index,item);
 			}			
@@ -396,7 +428,7 @@ $(function(){
 
 	$(".backToStart").click(function(){
 		if(!inAnimation){
-				inAnimation = true;
+			inAnimation = true;
 			likeN = 0;
 			dislikeN = 0;
 			LikeDislikeList = [];
