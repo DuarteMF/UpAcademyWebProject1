@@ -276,12 +276,13 @@ function searchData(){
 		url:"https://www.googleapis.com/books/v1/volumes?q=" + q + "&startIndex=" + currentIndex,
 	}).done(function(data){
 		$(".bookDiv").empty();
-		$ShoppingCartList = $(".ShoppingCart table tbody").children("tr");
-		// $.each($ShoppingCartList,function(index,item){
-		// 	if(index>$(".bookDiv .book").length){
-		// 		item.remove();
-		// 	}
-		// });
+		if(currentIndex==0){
+			$ShoppingCartList = $(".ShoppingCart table tbody").children("tr:not(:first-of-type)");
+			$.each($ShoppingCartList,function(index,item){
+				item.remove();
+			});
+		}
+		
 		$.each(data.items,function(index,item){	
 			if(index<10){
 				// console.log(item);
