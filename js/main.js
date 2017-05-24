@@ -158,6 +158,7 @@ $(".bookDiv").on("click",".parent button.switchImage", function(){
 }) 
 
 $("#ListButton").click(function(){
+	$(".introductionText").hide();
 	if($(".bookDiv").css("display")!="none"){
 		$(".bookDiv").hide();
 		$(".buttons").removeClass("active");
@@ -180,7 +181,7 @@ $("#ShoppingButton, #shopping").click(function(){
 			$(value).parents("tr").addClass("active");
 		}
 	})
-	
+	$(".introductionText").hide();
 	if($(".bookDiv").css("display")!="none"){
 		$(".bookDiv").hide();
 		$(".buttons").removeClass("active");
@@ -283,7 +284,8 @@ function searchData(){
 		// });
 		$.each(data.items,function(index,item){	
 			if(index<10){
-				console.log(item);
+				// console.log(item);
+				$(".introductionText").hide();
 				loadData(index,item);
 				loadShoppingData(index,item);
 			}			

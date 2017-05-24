@@ -1,12 +1,13 @@
 body {
 	text-align: center;
-	background-color: #CCFFFF;
-	padding-bottom: 0px;
+	background-image: url("http://wallpapercave.com/wp/9PUgvMA.jpg");
+	padding-bottom: 10px;
 	padding-left: 0px;
 	padding-right: 0px;
 	padding-top: 0px;
 	height:100%;
 	width: 100%;
+	margin-bottom: 30px;
 }
 
 html {
@@ -14,8 +15,9 @@ html {
 	padding-left: 0px;
 	padding-right: 0px;
 	padding-top: 0px;
-	height:100%;
+	min-height:100%;
 	width: 100%;
+	position: relative;
 }
 
 .Result, .ShoppingCart{
@@ -110,6 +112,9 @@ footer {
 	width: 100%;
 	padding:0px;
 	margin-top: 10px;
+	position: fixed;
+	bottom: 0;
+	height: 30px;
 }
 
 footer p{
@@ -282,6 +287,7 @@ td.hide{
 	background: none;
 	border: none;
 	font-size: 40px;
+	background-color: white;
 }
 
 #backButton.active{
@@ -300,4 +306,9 @@ fieldset{
 
 #SearchBooksCategory{
 	height: 100%;
+}
+
+.introductionText{
+	color: white;
+	text-align: center;
 }
