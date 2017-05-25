@@ -5,6 +5,8 @@ var currentIndex;
 
 var LikeDislikeList = [];
 
+var q = "";
+
 var APIkey = "AIzaSyCEb5zro0QNPnPMooqx4s0tMcv04k4YSgc";
 var UserID = "117330412869481617595";
 var ShelfID = "1001";
@@ -272,6 +274,10 @@ function searchData(){
 
 	q = searchText + categoryID + searchCategoryText
 
+	if(q==""){
+		return
+	}
+
 	$.ajax({
 		url:"https://www.googleapis.com/books/v1/volumes?q=" + q + "&startIndex=" + currentIndex,
 	}).done(function(data){
@@ -301,13 +307,17 @@ function searchData(){
 $("#SearchBooksSubmit").click(function(){
 	currentIndex = 0;
 	searchData();
-	reset();
+	if(q!=""){
+		reset();		
+	}
 });
 
 $("#SearchBooks, #SearchBooksCategoryText").keyup(function(event){
 	if(event.which == 13) {
 		currentIndex = 0;
-		reset();
+		if(q!=""){
+			reset();		
+		}
 		searchData();
 	}	
 });
