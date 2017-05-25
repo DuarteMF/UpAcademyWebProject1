@@ -275,6 +275,7 @@ function searchData(){
 	$.ajax({
 		url:"https://www.googleapis.com/books/v1/volumes?q=" + q + "&startIndex=" + currentIndex,
 	}).done(function(data){
+		$(".introductionText").hide();
 		$(".bookDiv").empty();
 		if(currentIndex==0){
 			$ShoppingCartList = $(".ShoppingCart table tbody").children("tr:not(:first-of-type)");
@@ -286,26 +287,74 @@ function searchData(){
 		$.each(data.items,function(index,item){	
 			if(index<10){
 				// console.log(item);
-				$(".introductionText").hide();
 				loadData(index,item);
 				loadShoppingData(index,item);
 			}			
 		});
-	$(".buttons").addClass("active");		
+	$(".buttons").addClass("active");	
+	if($("#backButton").hasClass("active")){
+		$("#backButton").removeClass("active");
+	}	
 	});
-}
+};
 
 $("#SearchBooksSubmit").click(function(){
 	currentIndex = 0;
 	searchData();
+	reset();
 });
 
-$("#SearchBooks").keyup(function(event){
+$("#SearchBooks, #SearchBooksCategoryText").keyup(function(event){
 	if(event.which == 13) {
 		currentIndex = 0;
+		reset();
 		searchData();
 	}	
 });
+
+function reset(){
+	likeN = 0;
+	dislikeN = 0;	
+	LikeDislikeList = [];
+	$("#bookLikes").empty();
+	$("#bookDislikes").empty();
+	$(".introductionText").hide();
+	if($(".bookDiv").css("display")=="none"){
+		$(".bookDiv").show();
+		$(".buttons").addClass("active");
+		$("#backButton").removeClass("active");
+	}
+	if($(".Result").css("display")!="none"){
+		$(".Result").hide();
+	}	
+	if($(".ShoppingCart").css("display")!="none"){
+		$(".ShoppingCart").hide();
+	}
+};
+
+$("#LocalLibrary").click(function(){
+	currentIndex = 0;
+	$.ajax({
+	url:"https://www.googleapis.com/books/v1/users/" + UserID + "/bookshelves/" + ShelfID + "/volumes?key=" + APIkey,
+	}).done(function(data){
+		$(".introductionText").hide();
+		$(".bookDiv").empty();
+		$ShoppingCartList = $(".ShoppingCart table tbody").children("tr:not(:first-of-type)");
+		$.each($ShoppingCartList,function(index,item){
+			item.remove();
+		});
+		$.each(data.items,function(index,item){	
+			// console.log(item)
+			loadData(index,item);
+			loadShoppingData(index,item);
+		})
+	$(".buttons").addClass("active");	
+	if($("#backButton").hasClass("active")){
+		$("#backButton").removeClass("active");
+	}	
+	});
+});
+
 
 
 $(function(){	
@@ -452,7 +501,7 @@ $(function(){
   			$("#bookLikes").empty();
   			$("#bookDislikes").empty();
   			$("#TotalPrice").text("");
-  		}
+	  	}
 	});
 });
 
