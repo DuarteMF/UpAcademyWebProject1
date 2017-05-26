@@ -41,6 +41,8 @@ dataBase.transaction(function(tx){
 	tx.executeSql('CREATE TABLE IF NOT EXISTS Books (id unique, title, author, opinion, price)');
 });
 
+var localLibraryChosen = false;
+
 function loadData(index, bookDict){
 	$bookParent = $(".bookDiv");
 	ID = "BookNum" + (index+1);
@@ -137,17 +139,6 @@ function loadShoppingData(index, bookDict){
 	}	
 	
 }
-
-
-// $.ajax({
-// 	url:"https://www.googleapis.com/books/v1/users/" + UserID + "/bookshelves/" + ShelfID + "/volumes?key=" + APIkey,
-// }).done(function(data){
-// 	$.each(data.items,function(index,item){	
-// 		// console.log(item)
-// 		loadData(index,item);
-// 		loadShoppingData(index,item);
-// 	})
-// });
 
 $(".bookDiv").on("click",".parent button.switchImage", function(){
 	$parent = $(this).parents(".parent");
@@ -291,11 +282,9 @@ function searchData(){
 		}
 		
 		$.each(data.items,function(index,item){	
-			if(index<10){
-				// console.log(item);
-				loadData(index,item);
-				loadShoppingData(index,item);
-			}			
+			// console.log(item);
+			loadData(index,item);
+			loadShoppingData(index,item);
 		});
 	$(".buttons").addClass("active");	
 	if($("#backButton").hasClass("active")){
@@ -343,6 +332,7 @@ function reset(){
 };
 
 $("#LocalLibrary").click(function(){
+	localLibraryChosen = true;
 	currentIndex = 0;
 	$.ajax({
 	url:"https://www.googleapis.com/books/v1/users/" + UserID + "/bookshelves/" + ShelfID + "/volumes?key=" + APIkey,
@@ -396,19 +386,18 @@ $(function(){
   			$allBooks = $(".book");
   			$parent = $(".book.active");
   			var index = $allBooks.index($parent);
-  			// if(index+1<$allBooks.length){
-			// 	$next = $parent.next();
-			// }else{
-			// 	$next = $(".Result");
-			// 	$(".row.buttons.active").removeClass("active");
-			// }
 
-			if(index+1<$allBooks.length){
-				$next = $parent.next();
-			}else{
-				$next = $(".book:first-of-type");
-			}
-
+  			if(!localLibraryChosen){
+  				if(index+1<$allBooks.length){
+					$next = $parent.next();
+				}else{
+					$next = $(".book:first-of-type");
+				}
+  			}else{
+  				if(index+1<$allBooks.length){
+					$next = $parent.next();
+				}
+  			}
 
 			// id unique, title, author, opinion, price
 			// filling out the database with like/dislike info on the books
@@ -436,7 +425,18 @@ $(function(){
 			$parent.fadeOut(500, function(){
 				$parent.removeClass("active");
 				$next.fadeIn(500, function(){
-					$next.addClass("active");
+					if(localLibraryChosen){
+						if(index+1==$allBooks.length){
+							$(".Result").show();
+							$(".bookDiv").hide();
+							$(".buttons").removeClass("active");
+							$("#backButton").removeClass("active");
+						}else{
+							$next.addClass("active");
+						}					
+					}else{
+						$next.addClass("active");
+					}
 					if(currentIndex-1==0){
 						$("#backButton").addClass("active");
 					}
