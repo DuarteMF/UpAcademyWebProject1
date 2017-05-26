@@ -1,21 +1,20 @@
+var d = new Date();
+document.getElementById("Date").innerHTML = d.toDateString();
+
+var localLibraryChosen = false;
+
 var likeN = 0;
 var dislikeN = 0;
 
-var currentIndex;
-
 var LikeDislikeList = [];
 
-var q = "";
+var currentIndex;
 
+var q = "";
 var APIkey = "AIzaSyCEb5zro0QNPnPMooqx4s0tMcv04k4YSgc";
 var UserID = "117330412869481617595";
 var ShelfID = "1001";
 var clientID = "883774612498-9qjo0fhi51u9n68vu6do0ebi7gpks352.apps.googleusercontent.com";
-
-var d = new Date();
-document.getElementById("Date").innerHTML = d.toDateString();
-
-var inAnimation = false;
 
 var currency_symbols = {
     'USD': '$', // US Dollar
@@ -35,13 +34,13 @@ var currency_symbols = {
     'VND': '₫', // Vietnamese Dong
 };
 
+var inAnimation = false;
+
 var dataBase = openDatabase("myDatabase", "1.0", "testDB", 2 * 1024 * 1024);
 dataBase.transaction(function(tx){
 	//tx.executeSql('DROP TABLE Books');
 	tx.executeSql('CREATE TABLE IF NOT EXISTS Books (id unique, title, author, opinion, price)');
 });
-
-var localLibraryChosen = false;
 
 function loadData(index, bookDict){
 	$bookParent = $(".bookDiv");
@@ -140,6 +139,127 @@ function loadShoppingData(index, bookDict){
 	
 }
 
+function searchData(){
+	var searchText = $("#SearchBooks").val();
+	var searchCategoryName =  $("#SearchBooksCategory option:selected").val();
+	var searchCategoryText = $("#SearchBooksCategoryText").val();
+
+	var categoryID = "";
+	if(!(searchCategoryName == "default") && (!("undefined" === typeof searchCategoryText) && !(searchCategoryText == ""))){
+		switch(searchCategoryName){
+			case "Title":
+				categoryID = "+intitle:";
+				break;
+			case "Author":
+				categoryID = "+inauthor:";
+				break;
+			case "Publisher":
+				categoryID = "+inpublisher:";
+				break;
+			case "Category":
+				categoryID = "+insubject:";
+				break;
+			case "ISBN":
+				categoryID = "+isbn:";
+				break;
+			default:
+				categoryID = "";
+		}
+	}else{
+		searchCategoryText = "";
+	}
+
+	q = searchText + categoryID + searchCategoryText;
+	if(q==""){
+		return
+	}
+
+	$.ajax({
+		url:"https://www.googleapis.com/books/v1/volumes?q=" + q + "&startIndex=" + currentIndex,
+	}).done(function(data){
+		$(".introductionText").hide();
+		$(".bookDiv").empty();
+		if(currentIndex==0){
+			$ShoppingCartList = $(".ShoppingCart table tbody").children("tr:not(:first-of-type)");
+			$.each($ShoppingCartList,function(index,item){
+				item.remove();
+			});
+		}
+		
+		$.each(data.items,function(index,item){	
+			// console.log(item);
+			loadData(index,item);
+			loadShoppingData(index,item);
+		});
+	$(".buttons").addClass("active");	
+	if($("#backButton").hasClass("active")){
+		$("#backButton").removeClass("active");
+	}	
+	});
+};
+
+function reset(){
+	likeN = 0;
+	dislikeN = 0;	
+	LikeDislikeList = [];
+	$("#bookLikes").empty();
+	$("#bookDislikes").empty();
+	$(".introductionText").hide();
+	if($(".bookDiv").css("display")=="none"){
+		$(".bookDiv").show();
+		$(".buttons").addClass("active");
+		$("#backButton").removeClass("active");
+	}
+	if($(".Result").css("display")!="none"){
+		$(".Result").hide();
+	}	
+	if($(".ShoppingCart").css("display")!="none"){
+		$(".ShoppingCart").hide();
+	}
+};
+
+$("#SearchBooksSubmit").click(function(){
+	currentIndex = 0;
+	searchData();
+	if(q!=""){
+		reset();		
+	}
+});
+
+$("#SearchBooks, #SearchBooksCategoryText").keyup(function(event){
+	if(event.which == 13) {
+		currentIndex = 0;
+		if(q!=""){
+			reset();		
+		}
+		searchData();
+	}	
+});
+
+$("#LocalLibrary").click(function(){
+	localLibraryChosen = true;
+	currentIndex = 0;
+	$.ajax({
+	url:"https://www.googleapis.com/books/v1/users/" + UserID + "/bookshelves/" + ShelfID + "/volumes?key=" + APIkey,
+	}).done(function(data){
+		$(".introductionText").hide();
+		$(".bookDiv").empty();
+		$ShoppingCartList = $(".ShoppingCart table tbody").children("tr:not(:first-of-type)");
+		$.each($ShoppingCartList,function(index,item){
+			item.remove();
+		});
+		$.each(data.items,function(index,item){	
+			// console.log(item)
+			loadData(index,item);
+			loadShoppingData(index,item);
+		})
+	$(".buttons").addClass("active");	
+	if($("#backButton").hasClass("active")){
+		$("#backButton").removeClass("active");
+	}	
+	});
+});
+
 $(".bookDiv").on("click",".parent button.switchImage", function(){
 	$parent = $(this).parents(".parent");
 	$present = $parent.find('.active');
@@ -230,132 +350,6 @@ $("#calculateTotal").click(function(){
 	});
 	$("#TotalPrice").text((Math.round(total*100)/100) + $(".currency:not(:empty)").first()[0].textContent);
 });
-
-function searchData(){
-	var searchText = $("#SearchBooks").val();
-
-	var searchCategoryName =  $("#SearchBooksCategory option:selected").val()
-
-	var searchCategoryText = $("#SearchBooksCategoryText").val();
-
-	var categoryID = "";
-	if(!(searchCategoryName == "default") && (!("undefined" === typeof searchCategoryText) && !(searchCategoryText == ""))){
-		switch(searchCategoryName){
-			case "Title":
-				categoryID = "+intitle:";
-				break;
-			case "Author":
-				categoryID = "+inauthor:";
-				break;
-			case "Publisher":
-				categoryID = "+inpublisher:";
-				break;
-			case "Category":
-				categoryID = "+insubject:";
-				break;
-			case "ISBN":
-				categoryID = "+isbn:";
-				break;
-			default:
-				categoryID = "";
-		}
-	}else{
-		searchCategoryText = "";
-	}
-
-	q = searchText + categoryID + searchCategoryText
-
-	if(q==""){
-		return
-	}
-
-	$.ajax({
-		url:"https://www.googleapis.com/books/v1/volumes?q=" + q + "&startIndex=" + currentIndex,
-	}).done(function(data){
-		$(".introductionText").hide();
-		$(".bookDiv").empty();
-		if(currentIndex==0){
-			$ShoppingCartList = $(".ShoppingCart table tbody").children("tr:not(:first-of-type)");
-			$.each($ShoppingCartList,function(index,item){
-				item.remove();
-			});
-		}
-		
-		$.each(data.items,function(index,item){	
-			// console.log(item);
-			loadData(index,item);
-			loadShoppingData(index,item);
-		});
-	$(".buttons").addClass("active");	
-	if($("#backButton").hasClass("active")){
-		$("#backButton").removeClass("active");
-	}	
-	});
-};
-
-$("#SearchBooksSubmit").click(function(){
-	currentIndex = 0;
-	searchData();
-	if(q!=""){
-		reset();		
-	}
-});
-
-$("#SearchBooks, #SearchBooksCategoryText").keyup(function(event){
-	if(event.which == 13) {
-		currentIndex = 0;
-		if(q!=""){
-			reset();		
-		}
-		searchData();
-	}	
-});
-
-function reset(){
-	likeN = 0;
-	dislikeN = 0;	
-	LikeDislikeList = [];
-	$("#bookLikes").empty();
-	$("#bookDislikes").empty();
-	$(".introductionText").hide();
-	if($(".bookDiv").css("display")=="none"){
-		$(".bookDiv").show();
-		$(".buttons").addClass("active");
-		$("#backButton").removeClass("active");
-	}
-	if($(".Result").css("display")!="none"){
-		$(".Result").hide();
-	}	
-	if($(".ShoppingCart").css("display")!="none"){
-		$(".ShoppingCart").hide();
-	}
-};
-
-$("#LocalLibrary").click(function(){
-	localLibraryChosen = true;
-	currentIndex = 0;
-	$.ajax({
-	url:"https://www.googleapis.com/books/v1/users/" + UserID + "/bookshelves/" + ShelfID + "/volumes?key=" + APIkey,
-	}).done(function(data){
-		$(".introductionText").hide();
-		$(".bookDiv").empty();
-		$ShoppingCartList = $(".ShoppingCart table tbody").children("tr:not(:first-of-type)");
-		$.each($ShoppingCartList,function(index,item){
-			item.remove();
-		});
-		$.each(data.items,function(index,item){	
-			// console.log(item)
-			loadData(index,item);
-			loadShoppingData(index,item);
-		})
-	$(".buttons").addClass("active");	
-	if($("#backButton").hasClass("active")){
-		$("#backButton").removeClass("active");
-	}	
-	});
-});
-
-
 
 $(function(){	
 	$("#buttonLike").click(function(){
@@ -515,7 +509,7 @@ $(function(){
 	});
 });
 
-// run th following code either in the browser console, or create a new button to run it
+// run the following code either in the browser console, or create a new button to run it
 /*dataBase.transaction(function (tx) {
 	tx.executeSql('SELECT * FROM Books', [], function (tx, results) {
 	   	$.each(results.rows,function(index,item){
